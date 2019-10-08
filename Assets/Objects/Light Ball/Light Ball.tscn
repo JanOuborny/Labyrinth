@@ -1,0 +1,44 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Assets/Objects/Light Ball/Light Ball.gd" type="Script" id=1]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type spatial;
+render_mode unshaded;
+
+uniform float a = 1.25;
+
+void fragment() {
+	/*
+	dot_prod^2, dot_prod^3, 1.0 / (1.0 - dot_prod / 2.0) - 1.0
+	
+	float a = 0.66;
+	float f_x = 1.0 / (a + x) - a;
+	float f_0 = 1.0 / a - a;
+	float rim = f_x * f_x / (f_0 * f_0);
+	*/
+	float dot_prod = dot(NORMAL, VIEW);
+	
+	//float a = 1.7;
+	float rim = pow(1.0 - a * (1.0 - dot_prod), 3.0);
+	
+	ALPHA = clamp(rim, 0.0, 1.0);
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/a = 1.25
+
+[node name="Light Ball" type="VisibilityNotifier"]
+script = ExtResource( 1 )
+
+[node name="OmniLight" type="OmniLight" parent="."]
+light_energy = 0.3
+omni_range = 1.0
+
+[node name="CSGSphere" type="CSGSphere" parent="."]
+radius = 0.07
+radial_segments = 48
+rings = 24
+material = SubResource( 2 )
+[connection signal="camera_exited" from="." to="." method="_on_Light_Ball_camera_exited"]

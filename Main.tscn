@@ -1,0 +1,126 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Main.gd" type="Script" id=1]
+[ext_resource path="res://World.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Objects/Player/Player.tscn" type="PackedScene" id=3]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0, 0, 0.607843 )
+corner_radius_bottom_right = 13
+corner_detail = 6
+anti_aliasing = false
+
+[node name="Main" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="World" type="Spatial" parent="."]
+script = ExtResource( 2 )
+
+[node name="Player view" type="ViewportContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+stretch = true
+
+[node name="Viewport" type="Viewport" parent="Player view"]
+size = Vector2( 1024, 600 )
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="Player" parent="Player view/Viewport" instance=ExtResource( 3 )]
+transform = Transform( -0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 0.5, 0, 0.5 )
+
+[node name="Minimap" type="ViewportContainer" parent="."]
+editor/display_folded = true
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 15.0
+margin_top = -250.0
+margin_right = 250.0
+margin_bottom = -15.0
+stretch = true
+
+[node name="Viewport" type="Viewport" parent="Minimap"]
+size = Vector2( 235, 235 )
+transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="Camera" type="Camera" parent="Minimap/Viewport"]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 5, 8, 5 )
+projection = 1
+current = true
+size = 10.0
+
+[node name="PopupDialog" type="PopupDialog" parent="."]
+visible = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -148.0
+margin_top = -91.0
+margin_right = 148.0
+margin_bottom = 91.0
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="PopupDialog"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 10
+custom_constants/margin_top = 10
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 10
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PopupDialog/MarginContainer"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 286.0
+margin_bottom = 172.0
+text = "Esc: To toogle Mouse capture (for controlling the look direction of the Player or close the Game window)
+
+WASD: For Player movement
+
+Space: For pushing the line before the Player (see Minimap)
+
+Left Mouse Button: To fire Light Balls
+
+Top left: FPS (current Frames Per Second)
+
+Bottom left: Minimap of the game (Player is shown in red)"
+
+[node name="Panel" type="Panel" parent="."]
+margin_right = 66.0
+margin_bottom = 58.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+margin_right = 42.0
+margin_bottom = 46.0
+custom_constants/margin_right = 10
+custom_constants/margin_top = 10
+custom_constants/margin_left = 10
+custom_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 56.0
+margin_bottom = 48.0
+
+[node name="FPS" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+margin_right = 46.0
+margin_bottom = 14.0
+text = "FPS: 60"
+
+[node name="Help" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
+modulate = Color( 0, 0, 0.627451, 1 )
+margin_top = 18.0
+margin_right = 46.0
+margin_bottom = 38.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "Help"
+flat = true
+[connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/Help" to="." method="_on_Help_pressed"]

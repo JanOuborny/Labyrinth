@@ -1,0 +1,51 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Assets/Objects/Player/Player.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Objects/Marker/Marker.tscn" type="PackedScene" id=2]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 0.05, 0.2, 0.05 )
+
+[node name="Player" type="KinematicBody"]
+script = ExtResource( 1 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0 )
+shape = SubResource( 1 )
+
+[node name="Rotation_Helper" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0.35, 0 )
+
+[node name="Camera" type="Camera" parent="Rotation_Helper"]
+cull_mask = 1048573
+current = true
+near = 0.02
+
+[node name="SpotLight" type="SpotLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0.045, 0.262, 0 )
+light_energy = 3.0
+light_specular = 1.0
+spot_range = 3.0
+spot_attenuation = 2.0
+spot_angle = 30.0
+spot_angle_attenuation = 0.5
+
+[node name="OmniLight" type="OmniLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.262, 0 )
+light_energy = 0.05
+
+[node name="Marker" type="Spatial" parent="."]
+
+[node name="CSGBox" parent="Marker" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.08655, 0.102608 )
+layers = 2
+width = 0.324338
+height = 0.1
+depth = 0.241487
+
+[node name="CSGBox2" parent="Marker" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.087, -0.147392 )
+layers = 2
+width = 0.0914963
+height = 0.1
+depth = 0.3

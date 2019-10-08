@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="SpatialMaterial" id=1]
+flags_unshaded = true
+flags_do_not_receive_shadows = true
+albedo_color = Color( 1, 0, 0, 1 )
+
+[node name="Marker" type="CSGBox"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0 )
+width = 0.02
+height = 0.02
+depth = 0.02
+material = SubResource( 1 )
