@@ -7,7 +7,7 @@ Push according to Player position and look direction.
 
 onready var world: Spatial = $World #$ViewportContainer/Viewport/World
 onready var player: Spatial = $"Player view/Viewport/Player" #world.get_node("Player")
-onready var rotation_helepr: Spatial = player.get_node("Rotation_Helper")
+onready var rotation_helper: Spatial = player.get_node("Rotation_Helper")
 
 onready var fps: Label = $Panel/MarginContainer/VBoxContainer/FPS
 
@@ -22,9 +22,9 @@ func _process(delta: float) -> void:
 	
 	if Input.is_action_just_pressed("ui_accept"):
 		var position = player.translation.floor()
-		var look_direction = rotation_helepr.global_transform.basis.z.round()
+		var look_direction = rotation_helper.global_transform.basis.z.round()
 		
-		if rotation_helepr.global_transform.basis.z.abs().max_axis() == Vector3.AXIS_X:
+		if rotation_helper.global_transform.basis.z.abs().max_axis() == Vector3.AXIS_X:
 			var row = position.x - look_direction.x
 			
 			if row >= 0 and row <= world.SIZE - 1:
