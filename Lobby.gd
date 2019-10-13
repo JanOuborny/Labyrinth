@@ -3,6 +3,7 @@ extends Control
 const DEFAULT_PORT = 8910 # Random port number
 const MAX_PLAYER_COUNT = 10
 
+
 func _on_Host_pressed():
 	var success = create_host()
 	if success:
@@ -17,6 +18,7 @@ func create_host() -> bool:
 	var host = NetworkedMultiplayerENet.new()
 	host.set_compression_mode(NetworkedMultiplayerENet.COMPRESS_RANGE_CODER) # Is this needed?
 	var err = host.create_server(DEFAULT_PORT, MAX_PLAYER_COUNT - 1)
+	get_tree().set_network_peer(host)
 	if err != OK:
 		# Is another server running?
 		_set_Status("Can't host, address in use.")
@@ -24,9 +26,9 @@ func create_host() -> bool:
 	return true
 
 func _on_Join_pressed():	
-	var ip = get_node("panel/address").get_text()
+	var ip = get_node("Panel/Address").get_text()
 	if not ip.is_valid_ip_address():
-		#_set_status("IP address is invalid", false)
+		_set_Status("IP address is invalid")
 		return
 	
 	var host = NetworkedMultiplayerENet.new()

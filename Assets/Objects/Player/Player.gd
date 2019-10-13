@@ -1,5 +1,7 @@
 extends KinematicBody
 
+signal player_moved
+
 """
 The Player movement.
 
@@ -101,8 +103,14 @@ func process_movement(delta):
 	hvel = hvel.linear_interpolate(target, accel * delta)
 	vel.x = hvel.x
 	vel.z = hvel.z
+	
+	var before_movement_translation = translation
+	
 	vel = move_and_slide(vel, Vector3(0, 1, 0), 0.05, 4, deg2rad(MAX_SLOPE_ANGLE))
 	translation.y = 0.0
+	
+	if before_movement_translation != translation:
+		emit_signal("player_moved", translation)
 
 func _input(event):
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:

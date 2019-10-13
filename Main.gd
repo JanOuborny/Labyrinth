@@ -16,6 +16,10 @@ func _ready() -> void:
 	
 	$Minimap/Viewport.world = world
 	$"Player view/Viewport".world = $World
+	
+	# Connect networking signals
+	get_tree().connect("network_peer_connected", self, "_on_player_connected")
+	get_tree().connect("network_peer_disconnected", self, "_on_player_disconnected")
 
 func _process(delta: float) -> void:
 	fps.text = "FPS: " + str(Engine.get_frames_per_second())
@@ -38,3 +42,27 @@ func _process(delta: float) -> void:
 
 func _on_Help_pressed() -> void:
 	$PopupDialog.popup()
+
+
+func _on_player_connected(id):
+	# Called on both clients and server when a peer connects. Send my info to it.
+	rpc_id(id, "register_player")
+	
+func _on_player_disconnected(id):
+	get_node("Players").get_node(id).free()
+
+func _on_Player_moved(new_position) -> void:
+	rpc_unreliable("update_player_movement", new_position)
+
+remote func register_player():
+	# Get the id of the RPC sender.
+	var id = get_tree().get_rpc_sender_id()
+	
+	var player = preload("res://Assets/Objects/PlayerCharacter/PlayerCharacter.tscn").instance()
+	player.set_name(str(id))
+	get_node("Players").add_child(player)
+	
+
+remote func update_player_movement(new_position) -> void:
+	var sender_id = get_tree().get_rpc_sender_id()
+	get_node("Players").get_node(str(sender_id)).translation = new_position

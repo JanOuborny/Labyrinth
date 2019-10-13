@@ -30,6 +30,7 @@ render_target_update_mode = 3
 transform = Transform( -0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, -0.707107, 0.5, 0, 0.5 )
 
 [node name="Minimap" type="ViewportContainer" parent="."]
+editor/display_folded = true
 anchor_top = 1.0
 anchor_bottom = 1.0
 margin_left = 15.0
@@ -91,7 +92,6 @@ Top left: FPS (current Frames Per Second)
 Bottom left: Minimap of the game (Player is shown in red)"
 
 [node name="Panel" type="Panel" parent="."]
-editor/display_folded = true
 margin_right = 66.0
 margin_bottom = 58.0
 custom_styles/panel = SubResource( 1 )
@@ -126,4 +126,5 @@ text = "Help"
 flat = true
 
 [node name="Players" type="Node" parent="."]
+[connection signal="player_moved" from="Player view/Viewport/Player" to="." method="_on_Player_moved"]
 [connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/Help" to="." method="_on_Help_pressed"]
